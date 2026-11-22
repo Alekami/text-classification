@@ -1,0 +1,9 @@
+.idea/
+.venv/
+.ipynb_checkpoints/
+__pycache__/
+*.py[cod]
+data/*
+!data/.gitkeep
+model_cache/
+results/.runs/

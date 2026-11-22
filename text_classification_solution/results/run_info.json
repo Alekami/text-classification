@@ -1,0 +1,134 @@
+{
+  "train_sha256": "61111c6dc31eaffa34d1e1fa62e2395325c9bc3b38bba1941a5f1ed9b3fa60df",
+  "val_ids_sha256": "86acbc49eba67e1a2d10c2992d0f6cda796e678d968d859260f70a351b894d60",
+  "train_size": 5987,
+  "val_size": 1498,
+  "python": "3.12.14",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "versions": {
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scikit-learn": "1.8.0",
+    "lightgbm": "4.6.0",
+    "nltk": "3.9.2",
+    "torch": "2.8.0+cpu",
+    "transformers": "4.57.1"
+  },
+  "config": {
+    "seed": 42,
+    "data": {
+      "train_csv": "data/train.csv",
+      "validation_group_folds": 5
+    },
+    "results_dir": "results",
+    "model_cache": "model_cache",
+    "device": "cpu",
+    "benchmark": {
+      "cpu_threads": 6,
+      "batch_size": 32,
+      "sample_size": 256,
+      "repeats": 3
+    },
+    "classic": {
+      "classifiers": {
+        "logistic_regression": {
+          "C": 1.0,
+          "max_iter": 1000
+        },
+        "lightgbm": {
+          "n_estimators": 250,
+          "learning_rate": 0.06,
+          "num_leaves": 31,
+          "min_child_samples": 8,
+          "colsample_bytree": 0.8,
+          "reg_lambda": 1.0
+        }
+      },
+      "experiments": [
+        {
+          "name": "baseline",
+          "vectorizer": "tfidf"
+        },
+        {
+          "name": "remove_stopwords",
+          "vectorizer": "tfidf",
+          "stop_words": "english"
+        },
+        {
+          "name": "stemming",
+          "vectorizer": "tfidf",
+          "morphology": "stem"
+        },
+        {
+          "name": "lemmatization",
+          "vectorizer": "tfidf",
+          "morphology": "lemma"
+        },
+        {
+          "name": "normalize_links_mentions",
+          "vectorizer": "tfidf",
+          "normalize_tweet": true
+        },
+        {
+          "name": "normalize_stopwords",
+          "vectorizer": "tfidf",
+          "normalize_tweet": true,
+          "stop_words": "english"
+        },
+        {
+          "name": "normalize_stemming",
+          "vectorizer": "tfidf",
+          "normalize_tweet": true,
+          "morphology": "stem"
+        },
+        {
+          "name": "normalize_lemmatization",
+          "vectorizer": "tfidf",
+          "normalize_tweet": true,
+          "morphology": "lemma"
+        },
+        {
+          "name": "normalize_stopwords_stemming",
+          "vectorizer": "tfidf",
+          "normalize_tweet": true,
+          "stop_words": "english",
+          "morphology": "stem"
+        },
+        {
+          "name": "word_unigrams_bigrams",
+          "vectorizer": "tfidf",
+          "ngram_range": [
+            1,
+            2
+          ]
+        },
+        {
+          "name": "bow_unigrams",
+          "vectorizer": "bow"
+        }
+      ]
+    },
+    "embeddings": {
+      "model_id": "BAAI/bge-small-en-v1.5",
+      "revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a",
+      "max_length": 96,
+      "batch_size": 32
+    },
+    "finetune": {
+      "model_id": "google/bert_uncased_L-4_H-512_A-8",
+      "revision": "606e4d55252882ac25ba1f1d1a182075830f5a90",
+      "max_length": 96,
+      "batch_size": 32,
+      "epochs": 3,
+      "learning_rate": 5e-05,
+      "weight_decay": 0.01,
+      "warmup_ratio": 0.1,
+      "max_grad_norm": 1.0
+    }
+  },
+  "stages": [
+    "classic",
+    "embeddings",
+    "finetune"
+  ]
+}
